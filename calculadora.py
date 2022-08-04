@@ -1,7 +1,7 @@
 """Interfaz grafica de una calculadora basica, la cual integra las operaciones del modulo operaciones.py"""
 # Crear la interface grafica de una calculadora
-from tkinter import *
 from functools import partial
+from tkinter import * 
 
 #   ____ DEFINICIONES ____
 # comandos
@@ -11,6 +11,7 @@ def agregar_caracter(caracter):
     # Limpiar la pantalla si se registro un error
     if formula.get() == 'Error':
         formula.set('')
+
     # Agregar el caracter presionado    
     formula.set(formula.get() + caracter)
 
@@ -21,6 +22,7 @@ def igual():
     except:
         formula.set("Error")
 
+
 # Ventana
 root = Tk()
 root.title("Calculadora")
@@ -30,11 +32,12 @@ root.config(
     pady=5,
     padx=5
 )
+
 # Menu
 menubar = Menu(root)
-
 viewmenu = Menu(menubar, tearoff=0)
 helpmenu = Menu(menubar, tearoff=0)
+
 # Cabeza
 display = Label(root)
 formula = StringVar()
@@ -46,8 +49,8 @@ display.config(
     anchor="e",
     font=("Console",16),
     foreground="#ddffff",
-    
 )
+
 # Cuerpo
 keypads = Frame(root)
 keypads.config(
@@ -56,8 +59,8 @@ keypads.config(
     height=300,
 )
 
-# Botones
 
+# Botones
 botones_text =[
     {"C": lambda:formula.set(""),"(":"",")":"","/":""},
     {"7":"","8":"","9":"","x":""},
@@ -73,7 +76,6 @@ for fila in botones_text: #Generando un diccionario con los objetos botones
             botones[boton] = Button(keypads, text=boton, command=fila[boton])
 
         elif boton == "+/-":
-            # formula_anterior = '-' + formula.get()
             botones["+/-"] = Button(keypads, text="+/-", command=fila["+/-"])
 
         else:
@@ -89,6 +91,7 @@ for fila in botones_text: #Generando un diccionario con los objetos botones
 
 # Cabeza
 display.pack()
+
 # Cuerpo
 keypads.pack()
 for i,v in enumerate(botones_text): #Ubicacndo los botones en una cuadricula
@@ -101,4 +104,3 @@ menubar.add_cascade(menu=viewmenu, label="Ver")
 menubar.add_cascade(menu=helpmenu, label="Ayuda")
 
 root.mainloop()
-# %%
