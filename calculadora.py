@@ -9,7 +9,7 @@ def agregar_caracter(caracter):
     """Comando utilizado para agregar un caracter al StringVar utilizado en el display de la calculadora"""
     
     # Limpiar la pantalla si se registro un error
-    if formula.get() == 'Error':
+    if formula.get() == 'E R R O R':
         formula.set('')
 
     # Agregar el caracter presionado    
@@ -20,7 +20,7 @@ def igual():
     try:
         formula.set(eval(formula.get().replace('x','*')))
     except:
-        formula.set("Error")
+        formula.set("E R R O R")
 
 
 # Ventana
@@ -33,10 +33,6 @@ root.config(
     padx=5
 )
 
-# Menu
-menubar = Menu(root)
-viewmenu = Menu(menubar, tearoff=0)
-helpmenu = Menu(menubar, tearoff=0)
 
 # Cabeza
 display = Label(root)
@@ -45,10 +41,10 @@ display.config(
     textvariable=formula,
     width=20,
     height=2,
-    bg= "#008080",
+    bg= "#192033",
     anchor="e",
     font=("Console",16),
-    foreground="#ddffff",
+    foreground="#FFFFFD",
 )
 
 # Cuerpo
@@ -57,6 +53,7 @@ keypads.config(
     pady=5,
     width=300,
     height=300,
+    bg = '#192033'
 )
 
 
@@ -72,15 +69,22 @@ botones_text =[
 botones={}
 for fila in botones_text: #Generando un diccionario con los objetos botones
     for boton in fila:
-        if boton in ["C","="]:
-            botones[boton] = Button(keypads, text=boton, command=fila[boton])
+        if boton == "=":
+            botones[boton] = Button(keypads, text=boton, command=fila[boton], bg = '#4CC2FF', fg = '#0E4D6E')
+
+        elif boton == 'C':
+            botones[boton] = Button(keypads, text=boton, command=fila[boton], bg = '#2C3145', fg = '#E9EEF1')
 
         elif boton == "+/-":
-            botones["+/-"] = Button(keypads, text="+/-", command=fila["+/-"])
+            botones["+/-"] = Button(keypads, text="+/-", command=fila["+/-"], bg = '#373A4D', fg = '#E9EEF1')
+        
+        elif boton in ['(', ')', '/', 'x', '-', '+']:
+            formula_anterior = formula.get() + boton
+            botones[boton] = Button(keypads, text=boton,activebackground="#ddffff", command=partial(agregar_caracter, boton), bg = '#2C3145', fg = '#E9EEF1')
 
         else:
             formula_anterior = formula.get() + boton
-            botones[boton] = Button(keypads, text=boton,activebackground="#ddffff", command=partial(agregar_caracter, boton))
+            botones[boton] = Button(keypads, text=boton,activebackground="#ddffff", command=partial(agregar_caracter, boton), bg = '#373A4D', fg = '#E9EEF1')
 
         botones[boton].config(
                 width=5,
@@ -99,8 +103,6 @@ for i,v in enumerate(botones_text): #Ubicacndo los botones en una cuadricula
         botones[u].grid(row=i,column=j, padx=5, pady=5)
 
 # Ventana
-root.config(menu=menubar)
-menubar.add_cascade(menu=viewmenu, label="Ver")
-menubar.add_cascade(menu=helpmenu, label="Ayuda")
+root.config(bg = '#192033')
 
 root.mainloop()
